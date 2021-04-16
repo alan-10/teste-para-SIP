@@ -6,6 +6,7 @@ import { sign } from 'jsonwebtoken';
 import authConfig from '../config/auth';
 import AppErro from '../errors/AppErro';
 
+
 interface Request {
   email: string;
   password: string;

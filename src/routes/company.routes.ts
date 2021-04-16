@@ -3,6 +3,8 @@ import ensureAuthenticated from '../middleware/ensureAuthenticated';
 import multer from 'multer';
 import uploadConfig from '../config/upload';
 
+import companyViews from '../views/company_views';
+
 import CreateCompanyService from '../services/CreateCompanyService';
 import UpdateAvatarCompany from '../services/UpdateAvatarCompany';
 import DeliteCompanyService from '../services/DeliteCompanyService';
@@ -14,6 +16,7 @@ const companyRoutes = Router();
 
 const upload = multer(uploadConfig);
 
+
 companyRoutes.post('/', async (request, response) => {
   const { name, email, password } = request.body;
 
@@ -21,7 +24,7 @@ companyRoutes.post('/', async (request, response) => {
 
   const company = await createCompany.execute({ name, email, password });
 
-  return response.json(company);
+  return response.json(companyViews.render({company}));
 });
 
 companyRoutes.patch(
@@ -58,7 +61,7 @@ companyRoutes.put('/update',ensureAuthenticated, async (request, response) => {
   return response.json(company);
 });
 
-companyRoutes.delete('/:id', async (request, response) => {
+companyRoutes.delete('/:id', ensureAuthenticated, async (request, response) => {
   const { id } = request.params;
 
   const deletecompany = new DeliteCompanyService();
